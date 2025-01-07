@@ -4,71 +4,92 @@
     <meta charset="UTF-8">
     <title>To the Power of Math!</title>
     <style>
-    h1 {
-        color: #FFFFFF;
-        font-family: system-ui;
-		margin-left: 20px;
+        h1 {
+            color: #FFFFFF;
+            font-family: system-ui;
+            margin-left: 20px;
         }
-	body {
-        background-color: #222629;
+        body {
+            background-color: #222629;
         }
-    label {
-        color: #86C232;
-        font-family: system-ui;
-        font-size: 20px;
-        margin-left: 20px;
-		margin-top: 20px;
+        label {
+            color: #86C232;
+            font-family: system-ui;
+            font-size: 20px;
+            margin-left: 20px;
+            margin-top: 20px;
         }
-     button {
-        background-color: #86C232;
-		border-color: #86C232;
-		color: #FFFFFF;
-        font-family: system-ui;
-        font-size: 20px;
-		font-weight: bold;
-        margin-left: 30px;
-		margin-top: 20px;
-		width: 140px;
+        button {
+            background-color: #86C232;
+            border-color: #86C232;
+            color: #FFFFFF;
+            font-family: system-ui;
+            font-size: 20px;
+            font-weight: bold;
+            margin-left: 30px;
+            margin-top: 20px;
+            width: 140px;
         }
-	 input {
-        color: #222629;
-        font-family: system-ui;
-        font-size: 20px;
-        margin-left: 10px;
-		margin-top: 20px;
-		width: 100px;
+        input {
+            color: #222629;
+            font-family: system-ui;
+            font-size: 20px;
+            margin-left: 10px;
+            margin-top: 20px;
+            width: 100px;
+        }
+        #result {
+            color: #86C232;
+            font-family: system-ui;
+            font-size: 20px;
+            margin-left: 20px;
+            margin-top: 20px;
         }
     </style>
     <script>
-        var callAPI = (base,exponent)=>{
+        var callAPI = (base, exponent) => {
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
-            var raw = JSON.stringify({"base":base,"exponent":exponent});
+            var raw = JSON.stringify({ "base": base, "exponent": exponent });
             var requestOptions = {
                 method: 'POST',
                 headers: myHeaders,
                 body: raw,
                 redirect: 'follow'
             };
-            
+
             fetch("https://tbgz6b230b.execute-api.us-east-1.amazonaws.com/dev", requestOptions)
-            .then(response => response.text())
-            .then(result => alert(JSON.parse(result).body))
-            .catch(error => console.log('error', error));
+                .then(response => response.json())
+                .then(result => {
+                    // Display the result from the Lambda function
+                    if (result.body && result.body.result) {
+                        document.getElementById('result').innerText = "Result: " + result.body.result;
+                    } else {
+                        document.getElementById('result').innerText = "Error: " + result.body.error;
+                    }
+                })
+                .catch(error => {
+                    console.log('error', error);
+                    document.getElementById('result').innerText = "An error occurred while calculating.";
+                });
         }
     </script>
 </head>
 <body>
     <h1>TO THE POWER OF MATH!</h1>
-	<form>
+    <form>
         <label>Base number:</label>
         <input type="text" id="base">
         <label>...to the power of:</label>
         <input type="text" id="exponent">
-        <button type="button" onclick="callAPI(document.getElementById('base').value,document.getElementById('exponent').value)">CALCULATE</button>
+        <button type="button" onclick="callAPI(document.getElementById('base').value, document.getElementById('exponent').value)">CALCULATE</button>
     </form>
+    
+    <!-- This is where the result will be displayed -->
+    <div id="result"></div>
 </body>
 </html>
+
 
 
 
