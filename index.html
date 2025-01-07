@@ -57,23 +57,30 @@
                 body: raw,
                 redirect: 'follow'
             };
-
+    
             fetch("https://tbgz6b230b.execute-api.us-east-1.amazonaws.com/dev", requestOptions)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
                 .then(result => {
-                    // Display the result from the Lambda function
-                    if (result.body && result.body.result) {
-                        document.getElementById('result').innerText = "Result: " + result.body.result;
-                    } else {
-                        document.getElementById('result').innerText = "Error: " + result.body.error;
+                    // The Lambda response has a nested JSON string in the `body` field
+                    let parsedBody = JSON.parse(result.body);
+                    if (parsedBody.result !== undefined) {
+                        document.getElementById('result').innerText = "Result: " + parsedBody.result;
+                    } else if (parsedBody.error) {
+                        document.getElementById('result').innerText = "Error: " + parsedBody.error;
                     }
                 })
                 .catch(error => {
-                    console.log('error', error);
+                    console.error('Error:', error);
                     document.getElementById('result').innerText = "An error occurred while calculating.";
                 });
-        }
+        };
     </script>
+    
 </head>
 <body>
     <h1>TO THE POWER OF MATH!</h1>
