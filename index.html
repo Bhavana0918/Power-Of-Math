@@ -1,3 +1,117 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>To the Power of Math!</title>
+    <style>
+        h1 {
+            color: #FFFFFF;
+            font-family: system-ui;
+            margin-left: 20px;
+        }
+        body {
+            background-color: #222629;
+        }
+        label {
+            color: #86C232;
+            font-family: system-ui;
+            font-size: 20px;
+            margin-left: 20px;
+            margin-top: 20px;
+        }
+        button {
+            background-color: #86C232;
+            border-color: #86C232;
+            color: #FFFFFF;
+            font-family: system-ui;
+            font-size: 20px;
+            font-weight: bold;
+            margin-left: 30px;
+            margin-top: 20px;
+            width: 140px;
+        }
+        input {
+            color: #222629;
+            font-family: system-ui;
+            font-size: 20px;
+            margin-left: 10px;
+            margin-top: 20px;
+            width: 100px;
+        }
+        #result {
+            color: #86C232;
+            font-family: system-ui;
+            font-size: 20px;
+            margin-left: 20px;
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        async function callAPI(base, exponent) {
+            const resultElement = document.getElementById('result');
+            if (isNaN(base) || isNaN(exponent)) {
+                resultElement.innerText = "Please enter valid numbers for base and exponent.";
+                return;
+            }
+
+            const payload = {
+                base: parseFloat(base),
+                exponent: parseFloat(exponent),
+            };
+
+            try {
+                const response = await fetch("https://f800b0eqnf.execute-api.us-east-1.amazonaws.com/dev", {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                const parsedBody = JSON.parse(data.body);
+
+                if (parsedBody.result !== undefined) {
+                    resultElement.innerText = "Result: " + parsedBody.result;
+                } else if (parsedBody.error) {
+                    resultElement.innerText = "Error: " + parsedBody.error;
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                resultElement.innerText = "An error occurred while calculating.";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>TO THE POWER OF MATH!</h1>
+    <form>
+        <label>Base number:</label>
+        <input type="text" id="base">
+        <label>...to the power of:</label>
+        <input type="text" id="exponent">
+        <button type="button" onclick="callAPI(document.getElementById('base').value, document.getElementById('exponent').value)">CALCULATE</button>
+    </form>
+    <div id="result"></div>
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -62,7 +176,7 @@
                 redirect: 'follow'
             };
     
-            fetch("https://hctwz2emjb.execute-api.us-east-1.amazonaws.com/dev/math", requestOptions)
+            fetch("https://f800b0eqnf.execute-api.us-east-1.amazonaws.com/dev", requestOptions)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
@@ -96,7 +210,7 @@
         <button type="button" onclick="callAPI(document.getElementById('base').value, document.getElementById('exponent').value)">CALCULATE</button>
     </form>
     
-    <!-- This is where the result will be displayed -->
+    
     <div id="result"></div>
 </body>
 </html>
