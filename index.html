@@ -173,11 +173,11 @@
                 method: 'POST',
                 headers: myHeaders,
                 body: raw,
-                mode: 'cors',
+                // mode: 'cors',
                 redirect: 'follow'
             };
     
-            fetch("https://v7kfjt5yk5.execute-api.us-east-1.amazonaws.com/dev/math", requestOptions)
+            fetch("https://3otkxph6bl.execute-api.us-east-1.amazonaws.com/dev", requestOptions)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
