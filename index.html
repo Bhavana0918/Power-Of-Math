@@ -63,7 +63,7 @@
                 redirect: 'follow'
             };
     
-            fetch("https://iw0cpi406e.execute-api.us-east-1.amazonaws.com/dev", requestOptions)
+            fetch("https://iw0cpi406e.execute-api.us-east-1.amazonaws.com/dev/", requestOptions)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
@@ -71,7 +71,7 @@
                     return response.json();
                 })
                 .then(result => {
-                    // The Lambda response has a nested JSON string in the `body` field
+                    
                     let parsedBody = JSON.parse(result.body);
                     if (parsedBody.result !== undefined) {
                         document.getElementById('result').innerText = "Result: " + parsedBody.result;
