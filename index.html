@@ -47,43 +47,41 @@
         }
     </style>
     <script>
-        var callAPI = (base, exponent) => {
-            if (isNaN(base) || isNaN(exponent)) {
-             document.getElementById('result').innerText = "Please enter valid numbers for base and exponent.";
-             return;
-            }
-            var myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-            var raw = JSON.stringify({ "base": base, "exponent": exponent });
-            var requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: raw,
-                // mode: 'cors',
-                redirect: 'follow'
+            var callAPI = (base, exponent) => {
+                if (isNaN(base) || isNaN(exponent)) {
+                    document.getElementById('result').innerText = "Please enter valid numbers for base and exponent.";
+                    return;
+                }
+                var myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+                var raw = JSON.stringify({ "base": base, "exponent": exponent });
+                var requestOptions = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    body: raw,
+                    redirect: 'follow'
+                };
+
+                fetch("https://iw0cpi406e.execute-api.us-east-1.amazonaws.com/dev/", requestOptions)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json(); // Parses JSON directly
+                    })
+                    .then(result => {
+                        if (result.result !== undefined) {
+                            document.getElementById('result').innerText = "Result: " + result.result;
+                        } else if (result.error) {
+                            document.getElementById('result').innerText = "Error: " + result.error;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        document.getElementById('result').innerText = "An error occurred while calculating.";
+                    });
             };
-    
-            fetch("https://iw0cpi406e.execute-api.us-east-1.amazonaws.com/dev/", requestOptions)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    return response.json();
-                })
-                .then(result => {
-                    
-                    let parsedBody = JSON.parse(result.body);
-                    if (parsedBody.result !== undefined) {
-                        document.getElementById('result').innerText = "Result: " + parsedBody.result;
-                    } else if (parsedBody.error) {
-                        document.getElementById('result').innerText = "Error: " + parsedBody.error;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('result').innerText = "An error occurred while calculating.";
-                });
-        };
+
     </script>
     
 </head>
