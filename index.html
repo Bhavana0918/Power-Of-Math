@@ -47,43 +47,6 @@
         }
     </style>
     <script>
-            // const apiGatewayUrl = process.env.API_GATEWAY_URL;
-            // var callAPI = (base, exponent) => {
-            //     if (isNaN(base) || isNaN(exponent)) {
-            //         document.getElementById('result').innerText = "Please enter valid numbers for base and exponent.";
-            //         return;
-            //     }
-            //     var myHeaders = new Headers();
-            //     myHeaders.append("Content-Type", "application/json");
-            //     var raw = JSON.stringify({ "base": base, "exponent": exponent });
-            //     var requestOptions = {
-            //         method: 'POST',
-            //         headers: myHeaders,
-            //         body: raw,
-            //         redirect: 'follow'
-            //     };
-
-            //     fetch("https://e7boz0ngi7.execute-api.us-east-1.amazonaws.com/dev", requestOptions)
-            //         .then(response => {
-            //             if (!response.ok) {
-            //                 throw new Error(`HTTP error! status: ${response.status}`);
-            //             }
-            //             return response.json(); 
-            //         })
-            //         .then(result => {
-            //             if (result.result !== undefined) {
-            //                 document.getElementById('result').innerText = "Result: " + result.result;
-            //             } else if (result.error) {
-            //                 document.getElementById('result').innerText = "Error: " + result.error;
-            //             }
-            //         })
-            //         .catch(error => {
-            //             console.error('Error:', error);
-            //             document.getElementById('result').innerText = "An error occurred while calculating.";
-            //         });
-            // };
-            
-    
     if (typeof window.apiGatewayUrl === "undefined") {
         console.error("Error: config.js not loaded. Check Amplify environment variables.");
     }
