@@ -47,7 +47,7 @@
         }
     </style>
     <script>
-            const apiGatewayUrl = process.env.API_GATEWAY_URL;
+            // const apiGatewayUrl = process.env.API_GATEWAY_URL;
             var callAPI = (base, exponent) => {
                 if (isNaN(base) || isNaN(exponent)) {
                     document.getElementById('result').innerText = "Please enter valid numbers for base and exponent.";
@@ -63,7 +63,7 @@
                     redirect: 'follow'
                 };
 
-                fetch(apiGatewayUrl, requestOptions)
+                fetch("https://e7boz0ngi7.execute-api.us-east-1.amazonaws.com/dev", requestOptions)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error(`HTTP error! status: ${response.status}`);
