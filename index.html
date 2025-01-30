@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Power of Math Calculator</title>
+    <title>Advanced Math Calculator</title>
     <style>
         body {
             background-color: #222629;
@@ -23,20 +23,28 @@
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
             animation: slideUp 1s ease-in-out;
         }
-        label, input, button {
-            font-size: 18px;
-            margin-top: 10px;
+        #display {
+            width: 90%;
+            font-size: 24px;
+            text-align: right;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #EEE;
+            color: #222;
+            border-radius: 5px;
         }
-        input {
-            width: 80px;
-            padding: 5px;
-            text-align: center;
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            justify-content: center;
         }
         button {
             background-color: #86C232;
             border: none;
             color: #FFFFFF;
-            padding: 10px;
+            padding: 15px;
+            font-size: 20px;
             cursor: pointer;
             border-radius: 5px;
             transition: transform 0.2s, background-color 0.3s;
@@ -67,64 +75,65 @@
         }
     </style>
     <script>
-        function calculate(operation) {
-            let num1 = parseFloat(document.getElementById('num1').value);
-            let num2 = parseFloat(document.getElementById('num2').value);
-            let result;
-            
-            if (isNaN(num1) || isNaN(num2)) {
-                document.getElementById('result').innerText = "Please enter valid numbers.";
-                return;
-            }
-            
-            switch(operation) {
-                case 'power':
-                    result = Math.pow(num1, num2);
-                    break;
-                case 'add':
-                    result = num1 + num2;
-                    break;
-                case 'subtract':
-                    result = num1 - num2;
-                    break;
-                case 'multiply':
-                    result = num1 * num2;
-                    break;
-                case 'divide':
-                    result = num2 !== 0 ? num1 / num2 : "Cannot divide by zero";
-                    break;
-                default:
-                    result = "Invalid operation";
-            }
-            
-            document.getElementById('result').innerText = "Result: " + result;
-            addToHistory(num1, num2, operation, result);
+        let expression = "";
+        function appendValue(value) {
+            expression += value;
+            document.getElementById('display').value = expression;
         }
-        
-        function addToHistory(num1, num2, operation, result) {
+        function clearDisplay() {
+            expression = "";
+            document.getElementById('display').value = "";
+        }
+        function calculate() {
+            try {
+                let result = eval(expression);
+                document.getElementById('display').value = result;
+                addToHistory(expression, result);
+                expression = "" + result;
+            } catch {
+                document.getElementById('display').value = "Error";
+                expression = "";
+            }
+        }
+        function addToHistory(exp, result) {
             let historyDiv = document.getElementById("history-list");
             let newItem = document.createElement("div");
             newItem.className = "history-item";
-            let opSymbol = { 'power': '^', 'add': '+', 'subtract': '-', 'multiply': '*', 'divide': '/' }[operation] || '?';
-            newItem.innerText = `${num1} ${opSymbol} ${num2} = ${result}`;
+            newItem.innerText = `${exp} = ${result}`;
             historyDiv.prepend(newItem);
         }
     </script>
 </head>
 <body>
-    <h1>Power of Math Calculator</h1>
+    <h1>Advanced Math Calculator</h1>
     <div class="container">
-        <label>Number 1:</label>
-        <input type="text" id="num1">
-        <label>Number 2:</label>
-        <input type="text" id="num2">
-        <br>
-        <button onclick="calculate('power')">Power (^)</button>
-        <button onclick="calculate('add')">Add (+)</button>
-        <button onclick="calculate('subtract')">Subtract (-)</button>
-        <button onclick="calculate('multiply')">Multiply (*)</button>
-        <button onclick="calculate('divide')">Divide (/)</button>
-        <div id="result"></div>
+        <input type="text" id="display" disabled>
+        <div class="button-grid">
+            <button onclick="appendValue('7')">7</button>
+            <button onclick="appendValue('8')">8</button>
+            <button onclick="appendValue('9')">9</button>
+            <button onclick="appendValue('/')">/</button>
+            
+            <button onclick="appendValue('4')">4</button>
+            <button onclick="appendValue('5')">5</button>
+            <button onclick="appendValue('6')">6</button>
+            <button onclick="appendValue('*')">*</button>
+            
+            <button onclick="appendValue('1')">1</button>
+            <button onclick="appendValue('2')">2</button>
+            <button onclick="appendValue('3')">3</button>
+            <button onclick="appendValue('-')">-</button>
+            
+            <button onclick="appendValue('0')">0</button>
+            <button onclick="appendValue('.')">.</button>
+            <button onclick="calculate()">=</button>
+            <button onclick="appendValue('+')">+</button>
+            
+            <button onclick="appendValue('(')">(</button>
+            <button onclick="appendValue(')')">)</button>
+            <button onclick="appendValue('**')">^</button>
+            <button onclick="clearDisplay()">C</button>
+        </div>
     </div>
     <div id="history" class="container">
         <h2>Calculation History</h2>
@@ -132,6 +141,7 @@
     </div>
 </body>
 </html>
+
 
 
 
