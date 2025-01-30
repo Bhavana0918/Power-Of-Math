@@ -4,6 +4,156 @@
     <meta charset="UTF-8">
     <title>To the Power of Math!</title>
     <style>
+        body {
+            background-color: #222629;
+            color: #FFFFFF;
+            font-family: system-ui;
+            text-align: center;
+        }
+        h1 {
+            color: #86C232;
+        }
+        .container {
+            width: 50%;
+            margin: auto;
+            background: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        }
+        label, input, button {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        input {
+            width: 80px;
+            padding: 5px;
+            text-align: center;
+        }
+        button {
+            background-color: #86C232;
+            border: none;
+            color: #FFFFFF;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #61892F;
+        }
+        #history {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .history-item {
+            background: #444;
+            padding: 5px;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+    </style>
+    <script>
+        if (typeof window.apiGatewayUrl === "undefined") {
+            console.error("Error: config.js not loaded. Check Amplify environment variables.");
+        }
+
+        function callAPI() {
+            let base = parseFloat(document.getElementById('base').value);
+            let exponent = parseFloat(document.getElementById('exponent').value);
+            
+            if (isNaN(base) || isNaN(exponent)) {
+                document.getElementById('result').innerText = "Please enter valid numbers.";
+                return;
+            }
+            
+            let requestOptions = {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ "base": base, "exponent": exponent }),
+                redirect: 'follow'
+            };
+
+            fetch(window.apiGatewayUrl, requestOptions)
+                .then(response => response.json())
+                .then(result => {
+                    if (result.result !== undefined) {
+                        document.getElementById('result').innerText = "Result: " + result.result;
+                        addToHistory(base, exponent, result.result);
+                    } else {
+                        document.getElementById('result').innerText = "Error: " + result.error;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('result').innerText = "An error occurred.";
+                });
+        }
+
+        function addToHistory(base, exponent, result) {
+            let historyDiv = document.getElementById("history");
+            let newItem = document.createElement("div");
+            newItem.className = "history-item";
+            newItem.innerText = `${base} ^ ${exponent} = ${result}`;
+            historyDiv.prepend(newItem);
+        }
+
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                callAPI();
+            }
+        });
+    </script>
+    <script src="public/config.js"></script>
+</head>
+<body>
+    <h1>TO THE POWER OF MATH!</h1>
+    <div class="container">
+        <label>Base:</label>
+        <input type="text" id="base">
+        <label>Exponent:</label>
+        <input type="text" id="exponent">
+        <button onclick="callAPI()">CALCULATE</button>
+        <div id="result"></div>
+    </div>
+    <div id="history" class="container">
+        <h2>Calculation History</h2>
+    </div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>To the Power of Math!</title>
+    <style>
         h1 {
             color: #FFFFFF;
             font-family: system-ui;
@@ -118,4 +268,4 @@
 
 
 
-
+ -->
