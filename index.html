@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>To the Power of Math!</title>
+    <title>Power of Math Calculator</title>
     <style>
         body {
             background-color: #222629;
@@ -67,66 +67,63 @@
         }
     </style>
     <script>
-        if (typeof window.apiGatewayUrl === "undefined") {
-            console.error("Error: config.js not loaded. Check Amplify environment variables.");
-        }
-
-        function callAPI() {
-            let base = parseFloat(document.getElementById('base').value);
-            let exponent = parseFloat(document.getElementById('exponent').value);
+        function calculate(operation) {
+            let num1 = parseFloat(document.getElementById('num1').value);
+            let num2 = parseFloat(document.getElementById('num2').value);
+            let result;
             
-            if (isNaN(base) || isNaN(exponent)) {
+            if (isNaN(num1) || isNaN(num2)) {
                 document.getElementById('result').innerText = "Please enter valid numbers.";
                 return;
             }
             
-            let requestOptions = {
-                method: 'POST',
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ "base": base, "exponent": exponent }),
-                redirect: 'follow'
-            };
-
-            fetch(window.apiGatewayUrl, requestOptions)
-                .then(response => response.json())
-                .then(result => {
-                    if (result.result !== undefined) {
-                        document.getElementById('result').innerText = "Result: " + result.result;
-                        addToHistory(base, exponent, result.result);
-                    } else {
-                        document.getElementById('result').innerText = "Error: " + result.error;
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('result').innerText = "An error occurred.";
-                });
+            switch(operation) {
+                case 'power':
+                    result = Math.pow(num1, num2);
+                    break;
+                case 'add':
+                    result = num1 + num2;
+                    break;
+                case 'subtract':
+                    result = num1 - num2;
+                    break;
+                case 'multiply':
+                    result = num1 * num2;
+                    break;
+                case 'divide':
+                    result = num2 !== 0 ? num1 / num2 : "Cannot divide by zero";
+                    break;
+                default:
+                    result = "Invalid operation";
+            }
+            
+            document.getElementById('result').innerText = "Result: " + result;
+            addToHistory(num1, num2, operation, result);
         }
-
-        function addToHistory(base, exponent, result) {
+        
+        function addToHistory(num1, num2, operation, result) {
             let historyDiv = document.getElementById("history-list");
             let newItem = document.createElement("div");
             newItem.className = "history-item";
-            newItem.innerText = `${base} ^ ${exponent} = ${result}`;
+            let opSymbol = { 'power': '^', 'add': '+', 'subtract': '-', 'multiply': '*', 'divide': '/' }[operation] || '?';
+            newItem.innerText = `${num1} ${opSymbol} ${num2} = ${result}`;
             historyDiv.prepend(newItem);
         }
-
-        document.addEventListener("keydown", function(event) {
-            if (event.key === "Enter") {
-                callAPI();
-            }
-        });
     </script>
-    <script src="public/config.js"></script>
 </head>
 <body>
-    <h1>TO THE POWER OF MATH!</h1>
+    <h1>Power of Math Calculator</h1>
     <div class="container">
-        <label>Base:</label>
-        <input type="text" id="base">
-        <label>Exponent:</label>
-        <input type="text" id="exponent">
-        <button onclick="callAPI()">CALCULATE</button>
+        <label>Number 1:</label>
+        <input type="text" id="num1">
+        <label>Number 2:</label>
+        <input type="text" id="num2">
+        <br>
+        <button onclick="calculate('power')">Power (^)</button>
+        <button onclick="calculate('add')">Add (+)</button>
+        <button onclick="calculate('subtract')">Subtract (-)</button>
+        <button onclick="calculate('multiply')">Multiply (*)</button>
+        <button onclick="calculate('divide')">Divide (/)</button>
         <div id="result"></div>
     </div>
     <div id="history" class="container">
@@ -135,7 +132,6 @@
     </div>
 </body>
 </html>
-
 
 
 
