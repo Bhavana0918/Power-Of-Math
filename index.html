@@ -25,7 +25,7 @@
             animation: slideUp 1s ease-in-out;
         }
         #display {
-            width: 95%;
+            width: 70%;
             font-size: 28px;
             text-align: right;
             padding: 12px;
@@ -81,6 +81,25 @@
             from { transform: translateY(20px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
+        /* Color Styles for Special Buttons */
+        .button-grid .factorial {
+            background-color: #00C853;
+        }
+        .button-grid .absolute {
+            background-color: #0097A7;
+        }
+        .button-grid .pi {
+            background-color: #7B1FA2;
+        }
+        .button-grid .inverse {
+            background-color: #FF9800;
+        }
+        .button-grid .square {
+            background-color: #8E24AA;
+        }
+        .button-grid .cube {
+            background-color: #1E88E5;
+        }
     </style>
     <script>
         let expression = "";
@@ -114,6 +133,25 @@
             let adv = document.querySelector('.advanced');
             adv.style.display = (adv.style.display === "none" || adv.style.display === "") ? "grid" : "none";
         }
+        function factorial(n) {
+            if (n === 0 || n === 1) return 1;
+            return n * factorial(n - 1);
+        }
+        function piValue() {
+            return Math.PI;
+        }
+        function absoluteValue() {
+            return Math.abs(expression);
+        }
+        function squareValue() {
+            return Math.pow(expression, 2);
+        }
+        function cubeValue() {
+            return Math.pow(expression, 3);
+        }
+        function inverseValue() {
+            return 1 / expression;
+        }
     </script>
 </head>
 <body>
@@ -121,6 +159,8 @@
     <div class="container">
         <input type="text" id="display" disabled>
         <div class="button-grid">
+            <!-- Basic Calculator Buttons -->
+            <button onclick="clearDisplay()">C</button>
             <button onclick="appendValue('7')">7</button>
             <button onclick="appendValue('8')">8</button>
             <button onclick="appendValue('9')">9</button>
@@ -141,7 +181,11 @@
             <button onclick="calculate()">=</button>
             <button onclick="appendValue('+')">+</button>
         </div>
+        
+        <!-- Toggle Button for Advanced Mode -->
         <button class="toggle-btn" onclick="toggleAdvanced()">Toggle Advanced Mode</button>
+        
+        <!-- Advanced Calculator Buttons -->
         <div class="button-grid advanced">
             <button onclick="appendValue('Math.sqrt(')">√</button>
             <button onclick="appendValue('Math.pow(')">xʸ</button>
@@ -152,6 +196,19 @@
             <button onclick="appendValue('Math.tan(')">tan</button>
             <button onclick="appendValue('Math.exp(')">e^x</button>
             <button onclick="appendValue('Math.cbrt(')">∛</button>
+            
+            <button onclick="appendValue('Math.asin(')">asin</button>
+            <button onclick="appendValue('Math.acos(')">acos</button>
+            <button onclick="appendValue('Math.atan(')">atan</button>
+            <button onclick="clearDisplay()">C</button>
+            
+            <!-- New Advanced Buttons -->
+            <button onclick="appendValue('Math.abs(')" class="absolute">|x|</button>
+            <button onclick="appendValue('Math.PI')" class="pi">π</button>
+            <button onclick="appendValue('factorial(')" class="factorial">n!</button>
+            <button onclick="appendValue('inverseValue(')" class="inverse">1/x</button>
+            <button onclick="appendValue('squareValue(')" class="square">x²</button>
+            <button onclick="appendValue('cubeValue(')" class="cube">x³</button>
         </div>
     </div>
     <div id="history" class="container">
